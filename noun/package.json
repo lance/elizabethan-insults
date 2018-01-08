@@ -1,0 +1,61 @@
+{
+  "name": "noun",
+  "version": "0.0.1",
+  "author": "Red Hat, Inc.",
+  "license": "Apache-2.0",
+  "scripts": {
+    "test": "tape test/*.js | tap-spec",
+    "lint": "eslint test/*.js index.js",
+    "prepare": "nsp check",
+    "coverage": "istanbul cover tape test/*.js",
+    "dependencyCheck": "szero . --ci",
+    "release": "standard-version",
+    "deploy": "nodeshift --strictSSL=false",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bucharestgold/shootout.git"
+  },
+  "files": [
+    "nouns.txt",
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "index.js",
+    "lib"
+  ],
+  "bugs": {
+    "url": "https://github.com/bucharestgold/shootout/issues"
+  },
+  "homepage": "https://github.com/bucharestgold/shootout",
+  "devDependencies": {
+    "eslint": "~3.8.1",
+    "eslint-config-semistandard": "~7.0.0",
+    "eslint-config-standard": "~6.2.0",
+    "eslint-plugin-promise": "~3.3.0",
+    "eslint-plugin-react": "~6.4.1",
+    "eslint-plugin-standard": "~2.0.1",
+    "istanbul": "~0.4.5",
+    "nodeshift": "~1.0.0",
+    "nsp": "~2.6.2",
+    "standard-version": "^3.0.0",
+    "supertest": "~3.0.0",
+    "szero": "^0.7.1",
+    "tap-spec": "~4.1.1",
+    "tape": "~4.6.2"
+  },
+  "description": "Simple web service that returns a random Elizabethan adjective",
+  "keywords": [
+    "MSA",
+    "microservices",
+    "webservice",
+    "rhoar",
+    "example",
+    "openshift"
+  ],
+  "dependencies": {
+    "express": "~4.16.2",
+    "kube-probe": "~0.1.2"
+  }
+}
