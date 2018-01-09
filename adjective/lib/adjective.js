@@ -15,7 +15,8 @@ module.exports = exports = function adjective (req, res) {
     const word = lines[Math.floor(Math.random() * lines.length)];
 
     res.json({
-      adjective: word
+      word,
+      type: 'adjective'
     });
   });
 };

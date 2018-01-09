@@ -1,4 +1,5 @@
 'use strict';
+const path = require('path');
 
 const express = require('express');
 const probe = require('kube-probe');
@@ -17,9 +18,8 @@ probe(app, {
   livenessURL: '/health/liveness'
 });
 
-// app.get('/', (req, res) => {
-//   res.end('app front end');
-// });
+// serve index.html from the file system
+app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.listen(port);
 console.log(`insult service listening on ${port}`);

@@ -21,6 +21,7 @@
     "package.json",
     "README.md",
     "LICENSE",
+    "public",
     "index.js",
     "lib"
   ],

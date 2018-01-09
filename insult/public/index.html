@@ -1,0 +1,90 @@
+<!--
+  ~
+  ~  Copyright Red Hat, Inc, and individual contributors.
+  ~
+  ~  Licensed under the Apache License, Version 2.0 (the "License");
+  ~  you may not use this file except in compliance with the License.
+  ~  You may obtain a copy of the License at
+  ~
+  ~  http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~  Unless required by applicable law or agreed to in writing, software
+  ~  distributed under the License is distributed on an "AS IS" BASIS,
+  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~  See the License for the specific language governing permissions and
+  ~  limitations under the License.
+  ~
+  -->
+<html>
+
+<head>
+<meta charset="utf-8">
+<title>RHOAR Shootout - Node.js</title>
+<link rel="stylesheet"
+  href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+  crossorigin="anonymous">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <div>
+      <h1>RHOAR Shootout - Node.js</h1>
+      <p class="lead">
+            This application showcases a silly implementation of an
+            application built using the microservices design pattern.
+            There are three services involved, in addition to the front
+            end (which you are currently viewing). Those services are
+            <pre>GET http://adjective:8080/api/adjective // provides an adjective</pre>
+            <pre>GET http://noun:8080/api/noun // provides a noun</pre>
+            <pre>GET http://insult:8080/api/insult // provides an insult</pre>
+      </p>
+      <p class="lead">
+        Click the big blue button to be insulted.
+      </p>
+
+      <div class="row">
+
+        <div class="col-md-8">
+          <h2>Insult service</h2>
+          <button id="invoke" type="submit" class="btn btn-primary">Invoke</button>
+          <h3>Insults:</h3>
+          <form class="form-inline">
+            <button id="clear" type="submit" class="btn btn-success">Clear</button>
+          </form>
+          <p id="insults"></p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <script
+      src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+      integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+      crossorigin="anonymous"></script>
+
+    <script>
+    $(document).ready(function() {
+
+      // UI event handlers
+      $('#invoke').click(function(e) {
+        $.getJSON('/api/insult', function(res) {
+          $('#insults').prepend(res.insult + '</br>\n');
+        });
+      e.preventDefault();
+      });
+
+      $('#clear').click(function(e) {
+        $('#insults').html('');
+        e.preventDefault();
+      });
+    });
+</script>
+</body>
+
+</html>

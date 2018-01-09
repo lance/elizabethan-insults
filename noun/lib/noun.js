@@ -14,7 +14,8 @@ module.exports = exports = function noun (req, res) {
     const word = lines[Math.floor(Math.random() * lines.length)];
 
     res.json({
-      noun: word
+      word,
+      type: 'noun'
     });
   });
 };
