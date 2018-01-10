@@ -22,27 +22,15 @@ const nounFallback = JSON.stringify({
   type: 'noun'
 });
 
-const adjectiveCircuit = opossum(_ => {
-  try {
-    // ROI will actually throw an exception if the hostname does not exist
-    // so we have to wrap it here.
-    return roi.get({endpoint: `http://adjective:8080/api/adjective`});
-  } catch (err) {
-    return Promise.reject(adjectiveFallback);
-  }
-},
-circuitOptions);
+const adjectiveCircuit = opossum(
+  _ => roi.get({endpoint: `http://adjective:8080/api/adjective`}),
+  circuitOptions);
 adjectiveCircuit.fallback(_ => adjectiveFallback);
 adjectiveCircuit.on('failure', console.error);
 
-const nounCircuit = opossum(_ => {
-  try {
-    return roi.get({endpoint: `http://noun:8080/api/noun`});
-  } catch (err) {
-    return Promise.reject(nounFallback);
-  }
-},
-circuitOptions);
+const nounCircuit = opossum(
+  _ => roi.get({endpoint: `http://noun:8080/api/noun`}),
+  circuitOptions);
 nounCircuit.fallback(_ => nounFallback);
 nounCircuit.on('failure', console.error);
 
@@ -51,11 +39,12 @@ function parseResponse (response) {
   try {
     return JSON.parse(response.body).word;
   } catch (err) {
-    return err.toString();
+    return nounFallback.body.word;
   }
 }
 
 module.exports = exports = function insult (req, res) {
+  res.type('application/json');
   // call adjective and noun services
   Promise.all([
     adjectiveCircuit.fire().then(parseResponse),
@@ -67,7 +56,7 @@ module.exports = exports = function insult (req, res) {
       insult: `Thou ${words[0]}, ${words[1]} ${words[2]}`
     };
     // res.set('Access-Control-Allow-Origin', '*');
-    res.type('application/json').send(response);
+    res.send(response);
   })
   .catch(error => {
     console.error(`Something went wrong: ${error}`);
