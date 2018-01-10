@@ -3,43 +3,35 @@
 const roi = require('roi');
 const opossum = require('opossum');
 
-// circuit breaker
 const circuitOptions = {
-  errorThresholdPercentage: 40,
+  errorThresholdPercentage: 70,
   timeout: 1000,
   resetTimeout: 10000
 };
 
-const adjectiveFallback = JSON.stringify({
-  body: {
-    word: 'lilly-livered',
-    type: 'adjective'
-  }
-});
+function buildCircuit (url, fallback) {
+  const circuit = opossum(_ => roi.get(url), circuitOptions);
+  circuit.on('failure', console.error);
+  return circuit;
+}
 
-const nounFallback = JSON.stringify({
-  word: 'dung scraper',
-  type: 'noun'
-});
+const adjectiveService = 'adjective';
+const adjectivePort = '8080';
+const adjectiveCircuit =
+  buildCircuit(`http://${adjectiveService}:${adjectivePort}/api/adjective`);
 
-const adjectiveCircuit = opossum(
-  _ => roi.get({endpoint: `http://adjective:8080/api/adjective`}),
-  circuitOptions);
-adjectiveCircuit.fallback(_ => adjectiveFallback);
-adjectiveCircuit.on('failure', console.error);
+const nounService = 'adjective';
+const nounPort = '8080';
+const nounCircuit =
+  buildCircuit(`http://${nounService}:${nounPort}/api/noun`);
 
-const nounCircuit = opossum(
-  _ => roi.get({endpoint: `http://noun:8080/api/noun`}),
-  circuitOptions);
-nounCircuit.fallback(_ => nounFallback);
-nounCircuit.on('failure', console.error);
-
-function parseResponse (response) {
-  console.log(response.toString());
+function parseResponse (response, fallback) {
   try {
     return JSON.parse(response.body).word;
   } catch (err) {
-    return nounFallback.body.word;
+    console.error(`Unable to parse response: ${response}`);
+    console.error(err);
+    return fallback;
   }
 }
 
@@ -47,19 +39,18 @@ module.exports = exports = function insult (req, res) {
   res.type('application/json');
   // call adjective and noun services
   Promise.all([
-    adjectiveCircuit.fire().then(parseResponse),
-    adjectiveCircuit.fire().then(parseResponse),
-    nounCircuit.fire().then(parseResponse)
+    adjectiveCircuit.fire().then(parseResponse, 'artless'),
+    adjectiveCircuit.fire().then(parseResponse, 'lilly-livered'),
+    nounCircuit.fire().then(parseResponse, 'dung scraper')
   ])
-  .then(words => {
-    const response = {
-      insult: `Thou ${words[0]}, ${words[1]} ${words[2]}`
-    };
-    // res.set('Access-Control-Allow-Origin', '*');
-    res.send(response);
-  })
+  .then(words =>
+    res.send({
+      insult: `Thou ${words[0]}, ${words[1]} ${words[2]}!`
+    })
+  )
   .catch(error => {
-    console.error(`Something went wrong: ${error}`);
-    res.send(error);
+    console.error(error.toString());
+    console.error(error.stack);
+    res.send({ insult: error.toString() });
   });
 };

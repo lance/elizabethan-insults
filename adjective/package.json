@@ -55,6 +55,7 @@
   ],
   "dependencies": {
     "express": "~4.16.2",
-    "kube-probe": "~0.1.2"
+    "kube-probe": "~0.1.2",
+    "nodeshift": "~1.0.0"
   }
 }
