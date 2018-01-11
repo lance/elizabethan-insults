@@ -10,7 +10,7 @@
     "coverage": "istanbul cover tape test/*.js",
     "dependencyCheck": "szero . --ci",
     "release": "standard-version",
-    "deploy": "nodeshift --strictSSL=false",
+    "deploy": "nodeshift --strictSSL=false --metadata.out=deployment-metadata.json",
     "postinstall": "license-reporter report",
     "start": "node ."
   },
