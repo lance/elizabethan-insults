@@ -20,7 +20,7 @@ const adjectivePort = '8080';
 const adjectiveCircuit =
   buildCircuit(`http://${adjectiveService}:${adjectivePort}/api/adjective`);
 
-const nounService = 'adjective';
+const nounService = 'noun';
 const nounPort = '8080';
 const nounCircuit =
   buildCircuit(`http://${nounService}:${nounPort}/api/noun`);
@@ -29,7 +29,7 @@ function parseResponse (response, fallback) {
   try {
     return JSON.parse(response.body).word;
   } catch (err) {
-    console.error(`Unable to parse response: ${response}`);
+    console.error('Unable to parse response', response);
     console.error(err);
     return fallback;
   }
