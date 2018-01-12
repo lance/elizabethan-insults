@@ -2,14 +2,25 @@
 const path = require('path');
 
 const express = require('express');
+const bodyParser = require('body-parser');
+const swaggerUi = require('swagger-ui-express');
+const api = require('./lib/insult.json');
 const probe = require('kube-probe');
 const port = process.env.PORT || 8080;
 
 const app = express();
-const router = express.Router();
+
+// support JSON data
+app.use(bodyParser.json());
+
+// add swagger API docs
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(api));
 
 // add the API
-router.get('/insult', require('./lib/insult'));
+const router = express.Router();
+const { get, post } = require('./lib/insult');
+router.get('/insult', get);
+router.post('/insult', post);
 app.use('/api', router);
 
 // add health and readiness endpoints

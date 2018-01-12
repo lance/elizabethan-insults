@@ -1,0 +1,172 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"version": "1.0.1",
+		"title": "Insult Service",
+		"description": "API for Elizabethan Insult Generator Microservices"
+	},
+	"servers": [
+		{
+			"description": "SwaggerHub API Auto Mocking",
+			"url": "https://virtserver.swaggerhub.com/Lanceball/insult-service/1.0.1"
+		}
+	],
+	"tags": [
+		{
+			"name": "insult",
+			"description": "An Elizabethan derrogatory insult"
+    },
+    {
+      "name": "health",
+      "description": "Information on the health of the service"
+    }
+	],
+	"paths": {
+		"/health/liveness": {
+			"get": {
+        "tags": [
+          "health"
+        ],
+				"summary": "Get the overall health of the service",
+				"description": "Returns an HTTP response code and a JSON document detailing the current health status of the service",
+				"operationId": "health/liveness",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/health"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/health"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/health/readiness": {
+			"get": {
+        "tags": [
+          "health"
+        ],
+				"summary": "Determine if the service is ready to receive connections",
+				"description": "Returns an HTTP response code and a JSON document detailing the readiness of the service to receive connections",
+				"operationId": "health/readiness",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/health"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Server error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/health"
+								}
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/insult": {
+			"get": {
+				"tags": [
+					"insult"
+				],
+				"summary": "Get an Insult",
+				"description": "Gets a JSON document that can be used to form an Elizabethan insult",
+				"operationId": "getInsult",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/insult"
+								}
+							}
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"insult"
+				],
+				"summary": "Insult a person by name",
+				"description": "Provides a JSON document from which a personalized insult can be formed",
+				"operationId": "insultByName",
+				"responses": {
+					"202": {
+						"description": "Insult someone by name",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/insult"
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"schemas": {
+			"health": {
+				"type": "object",
+				"required": [
+					"status"
+				],
+				"properties": {
+					"details": {
+						"type": "string"
+					},
+					"error": {
+						"type": "string"
+					}
+				}
+			},
+			"insult": {
+				"type": "object",
+				"required": [
+					"noun",
+					"adj1",
+					"adj2"
+				],
+				"properties": {
+					"noun": {
+						"type": "string"
+					},
+					"adj1": {
+						"type": "string"
+					},
+					"adj2": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					}
+				}
+			}
+		}
+	}
+}
