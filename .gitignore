@@ -3,3 +3,4 @@ node_modules
 tmp
 ignore
 licenses
+deployment-metadata.json

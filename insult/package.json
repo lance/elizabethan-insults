@@ -24,7 +24,8 @@
     "LICENSE",
     "public",
     "index.js",
-    "lib"
+    "lib",
+    "licenses"
   ],
   "bugs": {
     "url": "https://github.com/bucharestgold/shootout/issues"
@@ -59,7 +60,7 @@
     "body-parser": "~1.18.2",
     "express": "~4.16.2",
     "kube-probe": "~0.1.2",
-    "nodeshift": "~1.0.0",
+    "nodeshift": "~1.1.0",
     "opossum": "~1.3.1",
     "roi": "~0.17.0",
     "swagger-ui-express": "~2.0.14"

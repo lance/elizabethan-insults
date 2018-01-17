@@ -36,36 +36,37 @@
       <div class="col-6">
         <h2 class="display-6">Node.js</h2>
         <p class="lead">
-          This application showcases a silly implementation of an
+          This showcases an implementation of a silly but fun
           application built using the microservices design pattern.
           There are three services involved, in addition to the front
           end which you are currently viewing.
         </p>
-        <p>
-          Link to swagger, code repo, docs, diagrams, whatever
-        </p>
       </div>
       <div class="col">
-        <h2 class="display-6">API Endpoints</h2>
-          <ul class="list-group>">
-            <li class="list-group-item"><code>GET http://adjective:8080/api/adjective</code></li>
-            <li class="list-group-item"><code>GET http://noun:8080/api/noun</code></li>
-            <li class="list-group-item"><code>GET http://insult:8080/api/insult</code></li>
-          </ul>
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">API and Source Code</h2>
+            <a href="/api-docs" class="card-link" title="Insult API Documentation">Insult API Docs |
+            <a href="/licenses/licenses.html">Licenses</a> |
+            <a href="https://github.com/rhoar-shootout/rhoar-nodejs">Source code</a>
+          </div>
+        </div>
       </div>
 
     </div>
 
-    <div class="row">
+    <div class="row" style="margin-top:20px">
 
       <div class="col">
         <div class="card">
           <div class="card-body">
             <h2 class="card-title">Insult service</h2>
             <p class="card-text">
-              Tap or click the button below to be insulted.
+              Tap or click the button below to be insulted. Provide
+              your name to make it personal.
+              <form id="form-submit"><input type="text" id="name"></input></form>
             </p>
-            <button id="invoke-with-name" class="btn btn-outline-primary">Insult Me!</button>
+            <button id="invoke" class="btn btn-outline-primary">Insult Me!</button>
             <button id="clear" class="btn btn-outline-success">I Didn't Mean It</button>
           </div>
         </div>
@@ -73,8 +74,8 @@
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h2 class="card-title">Your Personal Insulting</h2>
-            <ul class="list-group" id="insults"></ul>
+            <h2 class="card-title">Your Personal Insults</h2>
+            <ul id="insults"></ul>
           </div>
         </div>
       </div>
@@ -93,31 +94,45 @@
     <script>
     $(document).ready(function() {
 
-      function getInsult (evt) {
-        $.getJSON('/api/insult', updateInsultList);
-        evt.preventDefault();
+      function getOrPostInsult (e) {
+        console.log($('#name').val())
+        if ($('#name').val() === '') getInsult();
+        else postInsult($('#name').val());
+        e.preventDefault();
       }
 
-      function postInsult (evt) {
-        $.post('/api/insult', JSON.stringify({
-          name: 'Lance'
-        }), updateInsultList, 'json');
+      function getInsult () {
+        $.getJSON('/api/insult', updateInsultList);
+      }
+
+      function postInsult (name) {
+        $.ajax({
+          type: 'POST',
+          url: '/api/insult',
+          data: JSON.stringify({
+            name
+          }),
+          dataType: 'json',
+          contentType: "application/json; charset=utf-8",
+          success: updateInsultList
+        });
       }
 
       function updateInsultList (insult) {
-        console.log(insult);
-        $('#insults').prepend($('<li>').addClass('list-group-item')
+        $('#insults').prepend($('<li>')//.addClass('list-group-item')
           .text(`${insult.name ? insult.name + ', t' : 'T'}hou ${insult.adj1}, ${insult.adj2} ${insult.noun}!`));
       }
 
-      // UI event handlers
-      $('#invoke').click(getInsult);
-      $('#invoke-with-name').click(postInsult);
-
-      $('#clear').click(function(e) {
+      function clearInsultList (e) {
         $('#insults').html('');
+        $('#name').val('');
         e.preventDefault();
-      });
+      }
+
+      // UI event handlers
+      $('#clear').click(clearInsultList);
+      $('#invoke').click(getOrPostInsult);
+      $('#form-submit').submit(getOrPostInsult);
     });
 </script>
 </body>
