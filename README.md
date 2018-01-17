@@ -10,10 +10,29 @@ The `insult` service also provides a simple HTTP front end at `GET /`.
 
 ## Running the Application
 
-Each service uses the `nodeshift` CLI to deploy to OpenShift. First, you will need to be logged in. So that we can run this locally, we will use Minishift.
+## Localhost
+
+Execute the `localhost.sh` script. It will install all of the dependencies and start each service
+on a separate port on the local system.
 
 ```sh
-minishift start --vm-driver=virtualbox --memory=4096 --cpus=2
+$ ./localhost.sh
 ```
 
-If you already have minishift running, make sure you are logged in with `oc login -u developer`. Then change into each of the service directories and run `npm run deploy`. If everything works as expected, you will see these services in your minishift console.
+## OpenShift
+
+This application should work on any current OpenShift instance. It has been developed and tested
+using `minishift`. Whatever the OpenShift instance is, you need to be logged in to deploy.
+
+```sh
+$ minishift start --vm-driver=virtualbox --memory=4096 --cpus=2
+$ oc login -u developer
+```
+
+Then you can run the `deploy.sh` script.
+
+```sh
+$ ./deploy.sh
+```
+
+Each service uses the `nodeshift` CLI to deploy to OpenShift.
