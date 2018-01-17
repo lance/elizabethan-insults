@@ -1,0 +1,114 @@
+{
+	"openapi": "3.0.0",
+	"servers": [
+		{
+			"url": "/"
+		}
+	],
+	"info": {
+		"description": "Adjective API for Elizabethan Insult Generator Microservices",
+		"version": "0.2",
+		"title": "Elizabethan Adjectives Service",
+		"license": {
+			"name": "Apache 2.0",
+			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+		}
+	},
+	"tags": [
+		{
+			"name": "developers",
+			"description": "Operations available to developers"
+		},
+    {
+      "name": "admins",
+      "description": "API routes for administrative purposes"
+    }
+	],
+	"paths": {
+		"/health/liveness": {
+			"get": {
+        "tags": [
+          "admins"
+        ],
+				"summary": "Returns OK if the API is healthy",
+				"description": "Provides a binary check of API liveness",
+        "operationId": "liveness",
+        "produces": [
+          "text/plain"
+        ],
+				"responses": {
+					"200": {
+            "description": "OK",
+            "schema": {
+              "type": "string"
+            }
+					}
+				}
+			}
+		},
+		"/health/readiness": {
+			"get": {
+        "tags": [
+          "admins"
+        ],
+				"summary": "Returns OK if the API is ready to receive requests",
+				"description": "Provides a binary check of API readiness",
+				"operationId": "readiness",
+				"responses": {
+          "produces": [
+            "text/plain"
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        }
+			}
+		},
+		"/api/adjective": {
+			"get": {
+				"tags": [
+					"developers"
+				],
+				"summary": "Returns a random Elizabethan adjective",
+				"description": "Provides a single Elizabethan adjective in JSON format",
+				"operationId": "adjective",
+				"responses": {
+					"200": {
+						"description": "A random adjective",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/adjective"
+								}
+							}
+						}
+					}
+				}
+      }
+    }
+	},
+	"components": {
+		"schemas": {
+			"adjective": {
+				"type": "object",
+				"required": [
+          "word",
+          "type"
+				],
+				"properties": {
+					"word": {
+						"type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+				}
+			}
+		}
+	}
+}
