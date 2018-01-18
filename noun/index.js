@@ -12,12 +12,10 @@ const swaggerUi = require('swagger-ui-express');
 const api = require('./lib/noun');
 app.use('/api', api(express.Router()));
 
-// add health and readiness endpoints
-const health = _ => { return { status: 'OK' }; };
+// add health check endpoint
+const health = (req, res) => res.json({ status: 'OK' });
 probe(app, {
-  readinessURL: '/health/readiness',
-  livenessURL: '/health/liveness',
-  readinessCallback: health,
+  livenessURL: '/api/health',
   livenessCallback: health
 });
 

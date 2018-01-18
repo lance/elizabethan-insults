@@ -52,24 +52,28 @@ const nounCircuit =
 function buildInsult () {
   // call adjective and noun services
   return Promise.all([
-    adjectiveCircuit.fire().then(parseResponse, 'artless'),
-    adjectiveCircuit.fire().then(parseResponse, 'lilly-livered'),
-    nounCircuit.fire().then(parseResponse, 'dung scraper')
-  ]).then(words => ({
+    adjectiveCircuit.fire().then(handleResponse('adjective'), 'artless'),
+    adjectiveCircuit.fire().then(handleResponse('adjective'), 'lilly-livered'),
+    nounCircuit.fire().then(handleResponse('noun'), 'dung scraper')
+  ])
+  .then(words => ({
     adj1: words[0],
     adj2: words[1],
     noun: words[2]
-  }));
+  }))
+  .catch(console.error);
 }
 
-function parseResponse (response, fallback) {
-  try {
-    return JSON.parse(response.body).word;
-  } catch (err) {
-    console.error('Unable to parse response', response);
-    console.error(err);
-    return fallback;
-  }
+function handleResponse (type) {
+  return function parseResponse (response, fallback) {
+    try {
+      return JSON.parse(response.body)[type];
+    } catch (err) {
+      console.error('Unable to parse response', response);
+      console.error(err);
+      return fallback;
+    }
+  };
 }
 
 module.exports = exports = function insultApi (router) {

@@ -17,9 +17,10 @@ app.use('/api-docs', swaggerUi.serve,
 app.use('/api', api(express.Router()));
 
 // add health and readiness endpoints
+const health = (req, res) => res.json({ status: 'OK' });
 probe(app, {
-  readinessURL: '/health/readiness',
-  livenessURL: '/health/liveness'
+  livenessURL: '/api/health',
+  livenessCallback: health
 });
 
 // serve index.html from the file system
