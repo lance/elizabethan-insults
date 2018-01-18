@@ -1,114 +1,172 @@
 {
-	"openapi": "3.0.0",
-	"servers": [
-		{
-			"url": "/"
-		}
-	],
-	"info": {
-		"description": "Adjective API for Elizabethan Insult Generator Microservices",
-		"version": "0.2",
-		"title": "Elizabethan Adjectives Service",
-		"license": {
-			"name": "Apache 2.0",
-			"url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-		}
-	},
-	"tags": [
-		{
-			"name": "developers",
-			"description": "Operations available to developers"
-		},
+  "openapi": "3.0.0",
+  "servers": [
     {
-      "name": "admins",
-      "description": "API routes for administrative purposes"
+      "url": "/api"
     }
-	],
-	"paths": {
-		"/health/liveness": {
-			"get": {
-        "tags": [
-          "admins"
-        ],
-				"summary": "Returns OK if the API is healthy",
-				"description": "Provides a binary check of API liveness",
-        "operationId": "liveness",
-        "produces": [
-          "text/plain"
-        ],
-				"responses": {
-					"200": {
+  ],
+  "info": {
+    "description": "Adjective API for Elizabethan Insult Generator Microservices",
+    "version": "1.0.1",
+    "title": "Elizabethan Adjectives Service",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "adjective",
+      "description": "An Elizabethan derrogatory adjective"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Get the health of the service",
+        "description": "Returns an HTTP response code and a JSON document detailing the current health status of the service",
+        "operationId": "health",
+        "responses": {
+          "200": {
             "description": "OK",
-            "schema": {
-              "type": "string"
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/health"
+                }
+              }
             }
-					}
-				}
-			}
-		},
-		"/health/readiness": {
-			"get": {
-        "tags": [
-          "admins"
-        ],
-				"summary": "Returns OK if the API is ready to receive requests",
-				"description": "Provides a binary check of API readiness",
-				"operationId": "readiness",
-				"responses": {
-          "produces": [
-            "text/plain"
-          ],
-          "responses": {
-            "200": {
-              "description": "OK",
-              "schema": {
-                "type": "string"
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/health"
+                }
               }
             }
           }
         }
-			}
-		},
-		"/api/adjective": {
-			"get": {
-				"tags": [
-					"developers"
-				],
-				"summary": "Returns a random Elizabethan adjective",
-				"description": "Provides a single Elizabethan adjective in JSON format",
-				"operationId": "adjective",
-				"responses": {
-					"200": {
-						"description": "A random adjective",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/adjective"
-								}
-							}
-						}
-					}
-				}
+      }
+    },
+    "/adjective": {
+      "get": {
+        "tags": [
+          "adjective"
+        ],
+        "summary": "Get an Adjective",
+        "description": "",
+        "operationId": "getAdjective",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/adjective"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "adjective"
+        ],
+        "summary": "Add an adjective",
+        "description": "",
+        "operationId": "addAdjective",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/adjective"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/adjective"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error"
+          }
+        }
+      }
+    },
+    "/adjective/{adjective}": {
+      "delete": {
+        "tags": [
+          "adjective"
+        ],
+        "summary": "Delete an adjective",
+        "description": "Delete the adjective specified in the path",
+        "operationId": "deleteAdjective",
+        "parameters": [
+          {
+            "name": "adjective",
+            "in": "path",
+            "description": "The adjective to be deleted",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
       }
     }
-	},
-	"components": {
-		"schemas": {
-			"adjective": {
-				"type": "object",
-				"required": [
-          "word",
-          "type"
-				],
-				"properties": {
-					"word": {
-						"type": "string"
+  },
+  "components": {
+    "schemas": {
+      "health": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "type": "string"
           },
-          "type": {
+          "details": {
+            "type": "string"
+          },
+          "error": {
             "type": "string"
           }
-				}
-			}
-		}
-	}
+        }
+      },
+      "adjective": {
+        "type": "object",
+        "required": [
+          "adjective"
+        ],
+        "properties": {
+          "adjective": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 }

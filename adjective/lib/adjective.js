@@ -1,22 +1,30 @@
 'use strict';
 
-const fs = require('fs');
+const bodyParser = require('body-parser');
+const db = require('./db')('./adjectives.txt');
+const apiPath = '/adjective';
 
-module.exports = exports = function adjective (req, res) {
-  fs.readFile('./adjectives.txt', 'utf-8', (err, data) => {
-    if (err) {
-      console.log(err);
-      res.status(500);
-      res.end(err);
-      return;
-    }
-    const lines = data.split('\n');
-    const word = lines[Math.floor(Math.random() * lines.length)];
+function get (req, res) {
+  res.json({ adjective: db.get() });
+}
 
-    res.json({
-      word,
-      type: 'adjective'
-    });
-  });
+function post (req, res) {
+  db.insert(req.body.adjective);
+  res.sendStatus(202);
+}
+
+function delete_ (req, res) {
+  if (db.delete_(req.params.word) >= 0) {
+    res.sendStatus(204);
+  } else {
+    res.sendStatus(404);
+  }
+}
+
+module.exports = exports = function adjectiveApi (router) {
+  router.use(bodyParser.json());
+  router.get(apiPath, get);
+  router.post(apiPath, post);
+  router.delete(`${apiPath}/:word`, delete_);
+  return router;
 };
-
