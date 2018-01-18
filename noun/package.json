@@ -56,6 +56,7 @@
     "openshift"
   ],
   "dependencies": {
+    "body-parser": "~1.18.2",
     "express": "~4.16.2",
     "kube-probe": "~0.1.2",
     "nodeshift": "~1.1.0",

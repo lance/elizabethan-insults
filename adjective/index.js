@@ -13,6 +13,7 @@ const api = require('./lib/adjective');
 app.use('/api', api(express.Router()));
 
 // add health and readiness endpoints
+const health = _ => { return { status: 'OK' }; };
 probe(app, {
   readinessURL: '/health/readiness',
   livenessURL: '/health/liveness',
@@ -29,7 +30,3 @@ app.use('/licenses', express.static(path.join(__dirname, 'licenses')));
 
 app.listen(port);
 console.log(`adjective service listening on ${port}`);
-
-function health (req, res) {
-  res.json({ status: 'OK' });
-}
