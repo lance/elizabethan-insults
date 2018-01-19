@@ -90,33 +90,68 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
       integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
       crossorigin="anonymous"></script>
+    <script src="/js/opossum.js"></script>
 
     <script>
     $(document).ready(function() {
 
+      const route = '/api/insult';
+
       function getOrPostInsult (e) {
-        console.log($('#name').val())
-        if ($('#name').val() === '') getInsult();
-        else postInsult($('#name').val());
         e.preventDefault();
+        if ($('#name').val() === '') return getInsult();
+        else return postInsult($('#name').val());
       }
 
       function getInsult () {
-        $.getJSON('/api/insult', updateInsultList);
+        return new Promise((resolve, reject) => {
+          try {
+            $.get({
+              url: '/api/insult',
+              dataType: 'json',
+              contentType: "application/json; charset=utf-8",
+              success: resolve,
+              error: reject
+            });
+          } catch (e) {
+            reject(e);
+          }
+        });
       }
 
       function postInsult (name) {
-        $.ajax({
-          type: 'POST',
-          url: '/api/insult',
-          data: JSON.stringify({
-            name
-          }),
-          dataType: 'json',
-          contentType: "application/json; charset=utf-8",
-          success: updateInsultList
+        return new Promise((resolve, reject) => {
+            $.post({
+            url: '/api/insult',
+            data: JSON.stringify({
+              name
+            }),
+            dataType: 'json',
+            contentType: "application/json; charset=utf-8",
+            success: resolve,
+            error: reject
+          });
         });
       }
+
+      const circuitBreakerOptions = {
+        timeout: 500,
+        errorThresholdPercentaage: 50,
+        resetTimeout: 5000
+      };
+
+      const insult = circuitBreaker(getOrPostInsult, circuitBreakerOptions);
+      insult.fallback(_ => {
+        return {
+          name: 'Server Admin',
+          adj1: 'sleep-addled',
+          adj2: 'half witted',
+          noun: 'bumbershoot'
+        }
+      });
+      insult.on('failure', console.log);
+      insult.on('reject', console.log);
+      insult.on('open', console.log);
 
       function updateInsultList (insult) {
         $('#insults').prepend($('<li>')//.addClass('list-group-item')
@@ -131,8 +166,8 @@
 
       // UI event handlers
       $('#clear').click(clearInsultList);
-      $('#invoke').click(getOrPostInsult);
-      $('#form-submit').submit(getOrPostInsult);
+      $('#invoke').click(e => insult.fire(e).then(updateInsultList));
+      $('#form-submit').submit(e => insult.fire(e).then(updateInsultList));
     });
 </script>
 </body>

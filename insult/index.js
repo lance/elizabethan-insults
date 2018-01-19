@@ -26,6 +26,7 @@ probe(app, {
 // serve index.html from the file system
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/licenses', express.static(path.join(__dirname, 'licenses')));
+app.use('/js/opossum.js', express.static(path.join(__dirname, 'node_modules/opossum/dist/opossum.js')));
 
 app.listen(port);
 console.log(`insult service listening on ${port}`);
