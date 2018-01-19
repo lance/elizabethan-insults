@@ -8,12 +8,12 @@ spec:
       containers:
         - readinessProbe:
             httpGet:
-              path: /health/readiness
+              path: /api/health
               port: 8080
               scheme: HTTP
           livenessProbe:
             httpGet:
-              path: /health/liveness
+              path: /api/health
               port: 8080
               scheme: HTTP
             initialDelaySeconds: 60
