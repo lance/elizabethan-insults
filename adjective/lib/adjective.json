@@ -7,7 +7,7 @@
   ],
   "info": {
     "description": "Adjective API for Elizabethan Insult Generator Microservices",
-    "version": "1.0.1",
+    "version": "1.0.4",
     "title": "Elizabethan Adjectives Service",
     "license": {
       "name": "Apache 2.0",
@@ -88,7 +88,7 @@
           }
         },
         "responses": {
-          "202": {
+          "201": {
             "description": "Accepted",
             "content": {
               "application/json": {

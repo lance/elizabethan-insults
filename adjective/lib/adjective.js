@@ -10,7 +10,7 @@ function get (req, res) {
 
 function post (req, res) {
   db.insert(req.body.adjective);
-  res.sendStatus(202);
+  res.sendStatus(201);
 }
 
 function delete_ (req, res) {

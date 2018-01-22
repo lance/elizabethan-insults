@@ -170,8 +170,8 @@
 
       // dynamic URL hackery
       const services = {
-        noun: 'http://localhost:8081',
-        adjective: 'http://localhost:8082'
+        noun: 'http://localhost:8082',
+        adjective: 'http://localhost:8081'
       };
       if (window.location.origin !== 'http://localhost:8080') {
         services.noun = window.location.origin.replace('insult', 'adjective');
