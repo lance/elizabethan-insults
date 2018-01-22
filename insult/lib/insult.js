@@ -19,7 +19,7 @@ function post (req, res) {
   res.type('application/json');
   buildInsult()
     .then(insult => Object.assign({ name: req.body.name }, insult))
-    .then(insult => res.send(insult))
+    .then(insult => { res.status(201); res.send(insult); })
     .catch(error => {
       console.error(error.toString());
       console.error(error.stack);

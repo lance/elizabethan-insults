@@ -1,11 +1,15 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "version": "1.0.3",
+    "version": "1.0.5",
     "title": "Insult Service",
     "description": "API for Elizabethan Insult Generator Microservices"
   },
   "servers": [
+    {
+      "description": "SwaggerHub API Auto Mocking",
+      "url": "https://virtserver.swaggerhub.com/InfoSec812/Insult/1"
+    },
     {
       "description": "localhost",
       "url": "/api"
@@ -87,7 +91,7 @@
           }
         },
         "responses": {
-          "202": {
+          "201": {
             "description": "Insult someone by name",
             "content": {
               "application/json": {
@@ -109,6 +113,9 @@
           "status"
         ],
         "properties": {
+          "status": {
+            "type": "string"
+          },
           "details": {
             "type": "string"
           },

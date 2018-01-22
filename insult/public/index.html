@@ -33,8 +33,8 @@
     <h1 class="display-3">RHOAR Shootout</h1>
 
     <div class="row">
-      <div class="col-6">
-        <h2 class="display-6">Node.js</h2>
+      <div class="col-4">
+        <h2>Node.js</h2>
         <p class="lead">
           This showcases an implementation of a silly but fun
           application built using the microservices design pattern.
@@ -43,38 +43,37 @@
         </p>
       </div>
       <div class="col">
-        <div class="card">
-          <div class="card-body">
-            <h2 class="card-title">API and Source Code</h2>
-            <a href="/api-docs" class="card-link" title="Insult API Documentation">Insult API Docs |
-            <a href="/licenses/licenses.html">Licenses</a> |
-            <a href="https://github.com/rhoar-shootout/rhoar-nodejs">Source code</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="row" style="margin-top:20px">
-
-      <div class="col">
-        <div class="card">
-          <div class="card-body">
-            <h2 class="card-title">Insult service</h2>
-            <p class="card-text">
+            <h2>Insult service</h2>
+            <p>
               Tap or click the button below to be insulted. Provide
               your name to make it personal.
               <form id="form-submit"><input type="text" id="name"></input></form>
             </p>
             <button id="invoke" class="btn btn-outline-primary">Insult Me!</button>
             <button id="clear" class="btn btn-outline-success">I Didn't Mean It</button>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:20px">
+
+      <div class="col-4">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">API and Source Code</h2>
+            <ul>
+              <li><a href="https://github.com/rhoar-shootout/rhoar-nodejs">Source code</a></li>
+              <li><a href="/api-docs" class="card-link" title="Insult API Documentation">Insult API Docs</a></li>
+              <li><a id="adj-api-docs" href="/api-docs" class="card-link" title="Adjective API Documentation">Adjective API Docs</a></li>
+              <li><a id="noun-api-docs" href="/api-docs" class="card-link" title="Noun API Documentation">Noun API Docs</a></li>
+              <li><a href="/licenses/licenses.html">Licenses</a></li>
+            </ul>
           </div>
         </div>
       </div>
       <div class="col">
         <div class="card">
           <div class="card-body">
-            <h2 class="card-title">Your Personal Insults</h2>
+            <h2 class="card-title">Your Insults</h2>
             <ul id="insults"></ul>
           </div>
         </div>
@@ -168,6 +167,18 @@
       $('#clear').click(clearInsultList);
       $('#invoke').click(e => insult.fire(e).then(updateInsultList));
       $('#form-submit').submit(e => insult.fire(e).then(updateInsultList));
+
+      // dynamic URL hackery
+      const services = {
+        noun: 'http://localhost:8081',
+        adjective: 'http://localhost:8082'
+      };
+      if (window.location.origin !== 'http://localhost:8080') {
+        services.noun = window.location.origin.replace('insult', 'adjective');
+        services.adjective = window.location.origin.replace('insult', 'noun');
+      }
+      $('#adj-api-docs').attr('href', `${services.adjective}/api-docs`);
+      $('#noun-api-docs').attr('href', `${services.noun}/api-docs`);
     });
 </script>
 </body>
