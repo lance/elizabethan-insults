@@ -25,7 +25,12 @@ This application should work on any current OpenShift instance. It has been deve
 using `minishift`. Whatever the OpenShift instance is, you need to be logged in to deploy.
 
 ```sh
-$ minishift start --vm-driver=virtualbox --memory=4096 --cpus=2
+$ minishift profile set riviera-dev
+$ minishift config set memory 4gb
+$ minishift config set vm-driver virtualbox
+$ minishift config set cpus 2
+$ minishift config set image-caching true
+$ minishift start
 $ oc login -u developer
 ```
 

@@ -21,7 +21,7 @@ function delete_ (req, res) {
   }
 }
 
-module.exports = exports = function adjectiveApi (router) {
+module.exports = exports = function nounApi (router) {
   router.use(bodyParser.json());
   router.get(apiPath, get);
   router.post(apiPath, post);

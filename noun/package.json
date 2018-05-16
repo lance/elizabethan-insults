@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/bucharestgold/shootout.git"
+    "url": "git://github.com/lance/elizabethan-insults.git"
   },
   "files": [
     "nouns.txt",
@@ -29,7 +29,7 @@
   "bugs": {
     "url": "https://github.com/lance/elizabethan-insults/issues"
   },
-  "homepage": "https://github.com/bucharestgold/elizabethan-insults",
+  "homepage": "https://github.com/lance/elizabethan-insults",
   "devDependencies": {
     "nodeshift": "~1.7.1",
     "nsp": "~3.2.1",
@@ -48,13 +48,14 @@
     "webservice",
     "rhoar",
     "example",
-    "openshift"
+    "openshift",
+    "circuit breaker"
   ],
   "dependencies": {
     "body-parser": "~1.18.2",
-    "express": "~4.16.2",
-    "kube-probe": "~0.1.2",
-    "license-reporter": "~1.1.3",
-    "swagger-ui-express": "~2.0.14"
+    "express": "~4.16.3",
+    "kube-probe": "~0.3.1",
+    "license-reporter": "~1.2.1",
+    "swagger-ui-express": "~3.0.9"
   }
 }

@@ -1,56 +1,41 @@
 <html lang="en">
-<!--
-  ~
-  ~  Copyright Red Hat, Inc, and individual contributors.
-  ~
-  ~  Licensed under the Apache License, Version 2.0 (the "License");
-  ~  you may not use this file except in compliance with the License.
-  ~  You may obtain a copy of the License at
-  ~
-  ~  http://www.apache.org/licenses/LICENSE-2.0
-  ~
-  ~  Unless required by applicable law or agreed to in writing, software
-  ~  distributed under the License is distributed on an "AS IS" BASIS,
-  ~  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~  See the License for the specific language governing permissions and
-  ~  limitations under the License.
-  ~
-  -->
-
 <head>
 <meta charset="utf-8">
-<title>RHOAR Shootout - Node.js</title>
-  <link rel="stylesheet"
-    href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css"
-    integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy"
-    crossorigin="anonymous">
+<title>Insult Me!</title>
+  <link rel="stylesheet" href="/css/bootstrap.css">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 </head>
 
 <body>
 
-  <div class="container">
-    <h1 class="display-3">RHOAR Shootout</h1>
-
-    <div class="row">
+  <div class="container" style="padding-top: 4em">
+    <div class="row" style="margin-bottom: 2em">
       <div class="col-4">
-        <h2>Node.js</h2>
-        <p class="lead">
-          This showcases an implementation of a silly but fun
-          application built using the microservices design pattern.
-          There are three services involved, in addition to the front
-          end which you are currently viewing.
-        </p>
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Insult Service</h3>
+            <p>
+              This showcases an implementation of a silly but fun Node.js
+              application built using the microservices design pattern.
+              There are three services involved, in addition to the front
+              end which you are currently viewing.
+            </p>
+          </div>
+        </div>
       </div>
       <div class="col">
-            <h2>Insult service</h2>
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Insult Me!</h2>
             <p>
               Tap or click the button below to be insulted. Provide
               your name to make it personal.
               <form id="form-submit"><input type="text" id="name"></input></form>
+              <button id="invoke" class="btn btn-outline-primary">Insult Me!</button>
+              <button id="clear" class="btn btn-outline-success">I Didn't Mean It</button>
             </p>
-            <button id="invoke" class="btn btn-outline-primary">Insult Me!</button>
-            <button id="clear" class="btn btn-outline-success">I Didn't Mean It</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -59,13 +44,15 @@
       <div class="col-4">
         <div class="card">
           <div class="card-body">
-            <h2 class="card-title">API and Source Code</h2>
+            <h4 class="card-title">API and Source Code</h4>
             <ul>
-              <li><a href="https://github.com/rhoar-shootout/rhoar-nodejs">Source code</a></li>
-              <li><a href="/api-docs" class="card-link" title="Insult API Documentation">Insult API Docs</a></li>
-              <li><a id="adj-api-docs" href="/api-docs" class="card-link" title="Adjective API Documentation">Adjective API Docs</a></li>
-              <li><a id="noun-api-docs" href="/api-docs" class="card-link" title="Noun API Documentation">Noun API Docs</a></li>
-              <li><a href="/licenses/licenses.html">Licenses</a></li>
+              <li><a href="https://github.com/lance/elizabethan-insults">Source code</a></li>
+              <li><a href="/api-docs" class="card-link" title="Insult API Documentation">Insult API Docs</a>
+                | <a href="/licenses/licenses.html" title="Insult Licenses">Licenses</a></li>
+              <li><a id="adj-api-docs" href="/api-docs" class="card-link" title="Adjective API Documentation">Adjective API Docs</a>
+                | <a id="adj-licenses" href="/licenses/licenses.html" title="">Licenses</a></li>
+              <li><a id="noun-api-docs" href="/api-docs" class="card-link" title="Noun API Documentation">Noun API Docs</a>
+                | <a id="noun-licenses" href="/licenses/licenses.html" title="">Licenses</a></li>
             </ul>
           </div>
         </div>
@@ -80,94 +67,12 @@
       </div>
 
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
-      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-      crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-      crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/js/bootstrap.min.js"
-      integrity="sha384-a5N7Y/aK3qNeh15eJKGWxsqtnX/wWdSZSKp+81YjTmS15nvnvxKHuzaWwXHDli+4"
-      crossorigin="anonymous"></script>
-    <script src="/js/opossum.js"></script>
+    <script src="/js/jquery.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/app.js"></script>
 
     <script>
     $(document).ready(function() {
-
-      const route = '/api/insult';
-
-      function getOrPostInsult (e) {
-        e.preventDefault();
-        if ($('#name').val() === '') return getInsult();
-        else return postInsult($('#name').val());
-      }
-
-      function getInsult () {
-        return new Promise((resolve, reject) => {
-          try {
-            $.get({
-              url: '/api/insult',
-              dataType: 'json',
-              contentType: "application/json; charset=utf-8",
-              success: resolve,
-              error: reject
-            });
-          } catch (e) {
-            reject(e);
-          }
-        });
-      }
-
-      function postInsult (name) {
-        return new Promise((resolve, reject) => {
-            $.post({
-            url: '/api/insult',
-            data: JSON.stringify({
-              name
-            }),
-            dataType: 'json',
-            contentType: "application/json; charset=utf-8",
-            success: resolve,
-            error: reject
-          });
-        });
-      }
-
-      const circuitBreakerOptions = {
-        timeout: 500,
-        errorThresholdPercentaage: 50,
-        resetTimeout: 5000
-      };
-
-      const insult = circuitBreaker(getOrPostInsult, circuitBreakerOptions);
-      insult.fallback(_ => {
-        return {
-          name: 'Server Admin',
-          adj1: 'sleep-addled',
-          adj2: 'half witted',
-          noun: 'bumbershoot'
-        }
-      });
-      insult.on('failure', console.log);
-      insult.on('reject', console.log);
-      insult.on('open', console.log);
-
-      function updateInsultList (insult) {
-        $('#insults').prepend($('<li>')//.addClass('list-group-item')
-          .text(`${insult.name ? insult.name + ', t' : 'T'}hou ${insult.adj1}, ${insult.adj2} ${insult.noun}!`));
-      }
-
-      function clearInsultList (e) {
-        $('#insults').html('');
-        $('#name').val('');
-        e.preventDefault();
-      }
-
-      // UI event handlers
-      $('#clear').click(clearInsultList);
-      $('#invoke').click(e => insult.fire(e).then(updateInsultList));
-      $('#form-submit').submit(e => insult.fire(e).then(updateInsultList));
-
       // dynamic URL hackery
       const services = {
         noun: 'http://localhost:8082',
@@ -178,7 +83,9 @@
         services.adjective = window.location.origin.replace('insult', 'noun');
       }
       $('#adj-api-docs').attr('href', `${services.adjective}/api-docs`);
+      $('#adj-licenses').attr('href', `${services.adjective}/licenses/licenses.html`);
       $('#noun-api-docs').attr('href', `${services.noun}/api-docs`);
+      $('#noun-licenses').attr('href', `${services.noun}/licenses/licenses.html`);
     });
 </script>
 </body>

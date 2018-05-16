@@ -34,12 +34,12 @@ function buildInsult () {
     adjectiveService.get(),
     nounService.get()
   ])
-  .then(words => ({
-    adj1: words[0],
-    adj2: words[1],
-    noun: words[2]
-  }))
-  .catch(e => console.error(`An unexpected error occurred: ${e}`));
+    .then(words => ({
+      adj1: words[0],
+      adj2: words[1],
+      noun: words[2]
+    }))
+    .catch(e => console.error(`An unexpected error occurred: ${e}`));
 }
 
 module.exports = exports = function insultApi (router) {
