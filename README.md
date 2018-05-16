@@ -1,4 +1,5 @@
-# RHOAR Shootout - Node.js
+# Elizabethan Insults App
+## A Circuit Breaker Example
 
 This repository contains the code for a simple application which creates Elizabethan insults. There are three services.
 
