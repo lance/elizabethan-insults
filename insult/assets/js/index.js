@@ -8,11 +8,18 @@ const route = '/api/insult';
 const circuitBreakerOptions = {
   timeout: 1000,
   errorThresholdPercentaage: 50,
-  resetTimeout: 10000
+  resetTimeout: 8000,
+  name: 'insult service'
 };
 
 const insult = circuitBreaker(getOrPostInsult, circuitBreakerOptions);
-insult.fallback(_ => {
+const localStats = insult.hystrixStats.getHystrixStream();
+localStats.on('data', message => updateStats(JSON.parse(message.substr(6))));
+
+new EventSource('/stats.stream').onmessage =
+  message => updateStats(JSON.parse(message.data));
+
+insult.fallback(function () {
   return {
     name: 'Server Admin',
     adj1: 'sleep-addled',
@@ -43,12 +50,23 @@ function getOrPostInsult (e) {
 }
 
 function updateInsultList (insult) {
-  $('#insults').prepend($('<li>')
-    .text(`${insult.name ? insult.name + ', t' : 'T'}hou ${insult.adj1}, ${insult.adj2} ${insult.noun}!`));
+  $('#insults').prepend($('<li class="list-group-item">')
+    .text(`${insult.name ? `${insult.name}, t` : 'T'}hou ${insult.adj1}, ${insult.adj2} ${insult.noun}!`));
 }
 
 function clearInsultList (e) {
   e.preventDefault();
   $('#insults').html('');
   $('#name').val('');
+}
+
+function updateStats (stats) {
+  const [ serviceName, _ ] = stats.name.split(' ');
+  $(`#${serviceName}_successes`).html(stats.rollingCountSuccess || stats.successes);
+  $(`#${serviceName}_failures`).html(stats.errorCount || stats.errors);
+  $(`#${serviceName}_fallbacks`).html(stats.rollingCountFallbackEmit || stats.fallbacks);
+  $(`#${serviceName}_fires`).html(stats.requestCount || stats.fires);
+  if (stats.latencyTotal_mean) {
+    $(`#${serviceName}_latency-mean`).html(stats.latencyTotal_mean.toFixed(2));
+  }
 }

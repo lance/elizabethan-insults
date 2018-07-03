@@ -3,11 +3,15 @@ const path = require('path');
 
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-const api = require('./lib/insult.js');
+
+const stats = require('./lib/stats');
+const api = require('./lib/insult');
 const probe = require('kube-probe');
 const port = process.env.PORT || 8080;
 
 const app = express();
+
+app.use('/stats.stream', stats);
 
 // add swagger API docs
 app.use('/api-docs', swaggerUi.serve,
@@ -23,18 +27,24 @@ probe(app, {
   livenessCallback: health
 });
 
-// serve index.html from the file system
+// serve some assets from the file system
 app.use('/', express.static(
   path.join(__dirname, 'public')));
 
+app.use('/patternfly', express.static(
+  path.join(__dirname, 'node_modules', 'patternfly', 'dist')));
+
 app.use('/css/bootstrap.css', express.static(
-  path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css')));
+  path.join(__dirname,
+    'node_modules', 'bootstrap', 'dist', 'css', 'bootstrap.min.css')));
 
 app.use('/js/bootstrap.js', express.static(
-  path.join(__dirname, 'node_modules', 'bootstrap', 'dist', 'js', 'bootstrap.bundle.min.js')));
+  path.join(__dirname,
+    'node_modules', 'bootstrap', 'dist', 'js', 'bootstrap.bundle.min.js')));
 
 app.use('/js/jquery.js', express.static(
-  path.join(__dirname, 'node_modules', 'jquery', 'dist', 'jquery.min.js')));
+  path.join(__dirname,
+    'node_modules', 'jquery', 'dist', 'jquery.min.js')));
 
 app.use('/js/app.js', express.static(
   path.join(__dirname, 'public', 'app.js')));

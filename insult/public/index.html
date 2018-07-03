@@ -1,78 +1,292 @@
 <html lang="en">
+
 <head>
-<meta charset="utf-8">
-<title>Insult Me!</title>
-  <link rel="stylesheet" href="/css/bootstrap.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta charset="utf-8">
+  <title>Insult Me!</title>
+  <link rel="stylesheet" type="text/css" href="/patternfly/css/patternfly.css">
+  <link rel="stylesheet" type="text/css" href="/patternfly/css/patternfly-additions.css">
 </head>
 
-<body>
+<body class="cards-pf">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <p class="navbar-brand">Insult Me!</p>
+          </div>
+        </div>
+      </nav>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="row row-cards-pf">
+          <div class="card-pf card-pf-view card-pf-view-xs">
+            <div class="card-pf-body">
+              <div class="card-pf-heading">
+                <h2 class="card-pf-title">
+                  <span class="pficon pficon-service"></span> Circuit Breaker
+                </h2>
+              </div>
+              <p class="lead">
+                This showcases an implementation of a silly but fun Node.js application built using the Circuit Breaker microservices design
+                pattern. There are three services involved, in addition to the front end which you are currently viewing.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-10">
+            <form id="form-submit">
+              <div class="form-group">
+                <label for="name" class="control-label">Name</label>
+                <input type="text" id="name" class="form-control" width="50%"></input>
 
-  <div class="container" style="padding-top: 4em">
-    <div class="row" style="margin-bottom: 2em">
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <h3 class="card-title">Insult Service</h3>
-            <p>
-              This showcases an implementation of a silly but fun Node.js
-              application built using the microservices design pattern.
-              There are three services involved, in addition to the front
-              end which you are currently viewing.
-            </p>
+                <span class="help-block">
+                  <a class="btn btn-primary" href="#" role="button" id="invoke">Insult Me!</a> Provide your name to make it personal</span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="row row-cards-pf">
+          <div class="card-pf card-pf-view card-pf-view-xs">
+            <div class="card-pf-heading">
+              <h2 class="card-pf-title">
+                <span class="pficon pficon-service"></span>
+                Your Insults
+                <a href="#" id="clear">
+                  <span class="pficon pficon-delete"></span>
+                </a>
+              </h2>
+            </div>
+            <div class="card-pf-body">
+              <ul id="insults" class="list-group" style="font-size: large"></ul>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col">
-        <div class="card">
-          <div class="card-body">
-            <h2 class="card-title">Insult Me!</h2>
-            <p>
-              Tap or click the button below to be insulted. Provide
-              your name to make it personal.
-              <form id="form-submit"><input type="text" id="name"></input></form>
-              <button id="invoke" class="btn btn-outline-primary">Insult Me!</button>
-              <button id="clear" class="btn btn-outline-success">I Didn't Mean It</button>
-            </p>
+
+      <div class="col-sm-6">
+        <div class="row row-cards-pf">
+          <div class="card-pf card-pf-view card-pf-view-xs">
+            <div class="card-pf-body">
+              <div class="card-pf-heading">
+                <h2 class="card-pf-title">
+                  <span class="pficon pficon-service"></span> Resources
+                </h2>
+              </div>
+              <ul class="list-group">
+                <li class="list-group-item">
+                  <a href="https://github.com/lance/elizabethan-insults">Source code</a>
+                </li>
+                <li class="list-group-item">
+                  <a href="/api-docs" class="card-link" title="Insult API Documentation">Insult API Docs</a>
+                  |
+                  <a href="/licenses/licenses.html" title="Insult Licenses">Licenses</a>
+                </li>
+                <li class="list-group-item">
+                  <a id="adj-api-docs" href="/api-docs" class="card-link" title="Adjective API Documentation">Adjective API Docs</a>
+                  |
+                  <a id="adj-licenses" href="/licenses/licenses.html" title="">Licenses</a>
+                </li>
+                <li class="list-group-item">
+                  <a id="noun-api-docs" href="/api-docs" class="card-link" title="Noun API Documentation">Noun API Docs</a>
+                  |
+                  <a id="noun-licenses" href="/licenses/licenses.html" title="">Licenses</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row row-cards-pf">
+          <div class="card-pf card-pf-view card-pf-view-xs">
+            <div class="card-pf-heading">
+              <h2 class="card-pf-title">Adjective Service</h2>
+            </div>
+            <div class="card-pf-body">
+              <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <span class="card-pf-aggregate-status-count" id="adjective_fires">0</span> Fires
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <span class="card-pf-aggregate-status-count" id="adjective_successes">0</span> Success
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <span class="card-pf-aggregate-status-count" id="adjective_fallbacks">0</span> Fallback
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <span class="card-pf-aggregate-status-count" id="adjective_failures">0</span> Failures
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <span class="card-pf-aggregate-status-count" id="adjective_timeouts">0</span> Timeout
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <span class="card-pf-aggregate-status-count" id="adjective_latency-mean">0</span> Latency
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row row-cards-pf">
+          <div class="card-pf card-pf-view card-pf-view-xs">
+            <div class="card-pf-heading">
+              <h2 class="card-pf-title">Noun Service</h2>
+            </div>
+            <div class="card-pf-body">
+              <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <span class="card-pf-aggregate-status-count" id="noun_fires">0</span> Fires
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <a href="#">
+                        <span class="card-pf-aggregate-status-count" id="noun_successes">0</span> Success
+                      </a>
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <a href="#">
+                        <span class="card-pf-aggregate-status-count" id="noun_fallbacks">0</span> Fallback
+                      </a>
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <a href="#">
+                        <span class="card-pf-aggregate-status-count" id="noun_failures">0</span> Failures
+                      </a>
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <a href="#">
+                        <span class="card-pf-aggregate-status-count" id="noun_timeouts">0</span> Timeout
+                      </a>
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <a href="#">
+                        <span class="card-pf-aggregate-status-count" id="noun_latency-mean">0</span> Latency
+                      </a>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row row-cards-pf">
+          <div class="card-pf card-pf-view card-pf-view-xs">
+            <div class="card-pf-heading">
+              <h2 class="card-pf-title">Insult Service</h2>
+            </div>
+            <div class="card-pf-body">
+              <div class="row">
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <span class="card-pf-aggregate-status-count" id="insult_fires">0</span> Fires
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <a href="#">
+                        <span class="card-pf-aggregate-status-count" id="insult_successes">0</span> Success
+                      </a>
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <a href="#">
+                        <span class="card-pf-aggregate-status-count" id="insult_fallbacks">0</span> Fallback
+                      </a>
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <a href="#">
+                        <span class="card-pf-aggregate-status-count" id="insult_failures">0</span> Failures
+                      </a>
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <a href="#">
+                        <span class="card-pf-aggregate-status-count" id="insult_timeouts">0</span> Timeout
+                      </a>
+                    </h2>
+                  </div>
+                </div>
+                <div class="col-xs-6 col-sm-4 col-md-4">
+                  <div class="card-pf card-pf-accented card-pf-aggregate-status card-pf-aggregate-status-mini">
+                    <h2 class="card-pf-title">
+                      <a href="#">
+                        <span class="card-pf-aggregate-status-count" id="insult_latency-mean">0</span> Latency
+                      </a>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="row" style="margin-top:20px">
+  </div>
 
-      <div class="col-4">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">API and Source Code</h4>
-            <ul>
-              <li><a href="https://github.com/lance/elizabethan-insults">Source code</a></li>
-              <li><a href="/api-docs" class="card-link" title="Insult API Documentation">Insult API Docs</a>
-                | <a href="/licenses/licenses.html" title="Insult Licenses">Licenses</a></li>
-              <li><a id="adj-api-docs" href="/api-docs" class="card-link" title="Adjective API Documentation">Adjective API Docs</a>
-                | <a id="adj-licenses" href="/licenses/licenses.html" title="">Licenses</a></li>
-              <li><a id="noun-api-docs" href="/api-docs" class="card-link" title="Noun API Documentation">Noun API Docs</a>
-                | <a id="noun-licenses" href="/licenses/licenses.html" title="">Licenses</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <div class="card-body">
-            <h2 class="card-title">Your Insults</h2>
-            <ul id="insults"></ul>
-          </div>
-        </div>
-      </div>
+  <script src="/js/jquery.js"></script>
+  <script src="/js/bootstrap.js"></script>
+  <script src="/patternfly/js/patternfly.min.js"></script>
+  <script src="/js/app.js"></script>
 
-    </div>
-    <script src="/js/jquery.js"></script>
-    <script src="/js/bootstrap.js"></script>
-    <script src="/js/app.js"></script>
-
-    <script>
-    $(document).ready(function() {
+  <script>
+    $(document).ready(function () {
       // dynamic URL hackery
       const services = {
         noun: 'http://localhost:8082',
@@ -87,7 +301,7 @@
       $('#noun-api-docs').attr('href', `${services.noun}/api-docs`);
       $('#noun-licenses').attr('href', `${services.noun}/licenses/licenses.html`);
     });
-</script>
+  </script>
 </body>
 
 </html>

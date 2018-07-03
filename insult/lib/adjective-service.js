@@ -8,7 +8,8 @@ const serviceUrl = `http://${adjectiveService}:${adjectivePort}/api/adjective`;
 const circuitOptions = {
   errorThresholdPercentage: 70,
   timeout: 500,
-  resetTimeout: 5000
+  resetTimeout: 5000,
+  name: 'adjective service'
 };
 const circuit = opossum(_ => roi.get(serviceUrl), circuitOptions);
 const fallbacks = [

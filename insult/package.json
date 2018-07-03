@@ -57,11 +57,14 @@
   "dependencies": {
     "body-parser": "~1.18.2",
     "bootstrap": "~4.1.1",
+    "c3": "~0.6.2",
+    "d3": "~5.5.0",
     "express": "~4.16.3",
     "jquery": "~3.3.1",
     "kube-probe": "~0.3.1",
     "license-reporter": "~1.2.1",
     "opossum": "~1.5.0",
+    "patternfly": "~3.50.0",
     "roi": "~0.18.0",
     "superagent": "~3.8.3",
     "swagger-ui-express": "~3.0.9"

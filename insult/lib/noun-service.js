@@ -8,7 +8,8 @@ const serviceUrl = `http://${nounService}:${nounPort}/api/noun`;
 const circuitOptions = {
   errorThresholdPercentage: 70,
   timeout: 500,
-  resetTimeout: 5000
+  resetTimeout: 5000,
+  name: 'noun service'
 };
 const circuit = opossum(_ => roi.get(serviceUrl), circuitOptions);
 
