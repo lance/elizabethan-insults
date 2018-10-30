@@ -14,6 +14,7 @@ const circuitBreakerOptions = {
 
 const insult = circuitBreaker(getOrPostInsult, circuitBreakerOptions);
 const localStats = insult.hystrixStats.getHystrixStream();
+// insult.status.on('snapshot', console.log);
 localStats.on('data', message => updateStats(JSON.parse(message.substr(6))));
 
 new EventSource('/stats.stream').onmessage =
@@ -61,6 +62,7 @@ function clearInsultList (e) {
 }
 
 function updateStats (stats) {
+  console.log(stats);
   const [ serviceName, _ ] = stats.name.split(' ');
   $(`#${serviceName}_successes`).html(stats.rollingCountSuccess || stats.successes);
   $(`#${serviceName}_failures`).html(stats.errorCount || stats.errors);

@@ -3,15 +3,20 @@ const path = require('path');
 
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
-
 const stats = require('./lib/stats');
 const api = require('./lib/insult');
 const probe = require('kube-probe');
 const port = process.env.PORT || 8080;
+const client = require('prom-client');
 
 const app = express();
 
 app.use('/stats.stream', stats);
+
+app.use('/metrics', (req, res) => {
+  res.set('Content-Type', client.register.contentType);
+  res.end(client.register.metrics());
+});
 
 // add swagger API docs
 app.use('/api-docs', swaggerUi.serve,
@@ -48,9 +53,6 @@ app.use('/js/jquery.js', express.static(
 
 app.use('/js/app.js', express.static(
   path.join(__dirname, 'public', 'app.js')));
-
-app.use('/licenses', express.static(
-  path.join(__dirname, 'licenses')));
 
 app.listen(port);
 
