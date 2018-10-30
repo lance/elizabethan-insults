@@ -25,7 +25,9 @@
     "public",
     "index.js",
     "lib",
-    "licenses"
+    "licenses",
+    "assets",
+    "webpack.config.js"
   ],
   "bugs": {
     "url": "https://github.com/lance/elizabethan-insults/issues"
