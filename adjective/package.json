@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "semistandard test/*.js index.js",
     "release": "standard-version",
-    "deploy": "nodeshift --strictSSL=false --nodeVersion=10.x --expose",
+    "deploy": "nodeshift --strictSSL=false --imageTag=12.x --expose",
     "start": "node ."
   },
   "repository": {
@@ -27,9 +27,9 @@
   },
   "homepage": "https://github.com/lance/elizabethan-insult",
   "devDependencies": {
-    "nodeshift": "~1.7.1",
+    "nodeshift": "~3.0.1",
     "semistandard": "~12.0.1",
-    "standard-version": "^3.0.0"
+    "standard-version": "^6.0.1"
   },
   "description": "Simple web service that returns a random Elizabethan adjective",
   "keywords": [
@@ -43,7 +43,7 @@
   "dependencies": {
     "body-parser": "~1.18.2",
     "express": "~4.16.3",
-    "kube-probe": "~0.3.1",
+    "kube-probe": "~0.3.2",
     "swagger-ui-express": "~3.0.9"
   }
 }

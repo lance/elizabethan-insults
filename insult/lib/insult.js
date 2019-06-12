@@ -3,15 +3,7 @@
 const bodyParser = require('body-parser');
 const nounService = require('./noun-service');
 const adjectiveService = require('./adjective-service');
-const client = require('prom-client');
-
-const collectDefaultMetrics = client.collectDefaultMetrics;
-collectDefaultMetrics({prefix: 'insult_'});
-const durationMetric = new client.Histogram({
-  name: 'duration',
-  help: 'HTTP request response duration',
-  buckets: [0.1, 5, 15, 50, 100, 500]
-});
+const circuitBreaker = require('opossum');
 
 function get (req, res) {
   res.type('application/json');
@@ -36,8 +28,12 @@ function post (req, res) {
     });
 }
 
+function metrics(req, res) {
+  res.type('text/plain');
+  res.send(circuitBreaker.metrics());
+}
+
 function buildInsult () {
-  const end = durationMetric.startTimer();
   // call adjective and noun services
   return Promise.all([
     adjectiveService.get(),
@@ -49,13 +45,13 @@ function buildInsult () {
       adj2: words[1],
       noun: words[2]
     }))
-    .catch(e => console.error(`An unexpected error occurred: ${e}`))
-    .finally(end);
+    .catch(e => console.error(`An unexpected error occurred: ${e}`));
 }
 
 module.exports = exports = function insultApi (router) {
   router.use(bodyParser.json());
   router.get('/insult', get);
   router.post('/insult', post);
+  router.get('/metrics', metrics);
   return router;
 };
