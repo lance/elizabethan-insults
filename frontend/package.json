@@ -45,6 +45,7 @@
     "circuit-breaker"
   ],
   "dependencies": {
+    "axios": "^0.19.0",
     "body-parser": "~1.18.2",
     "bootstrap": "^4.3.1",
     "c3": "~0.6.2",
@@ -54,8 +55,6 @@
     "kube-probe": "~0.3.1",
     "opossum": "^2.1.0",
     "patternfly": "^3.59.1",
-    "roi": "~0.18.0",
-    "superagent": "~3.8.3",
     "webpack": "~4.23.1"
   }
 }

@@ -8,3 +8,6 @@ npm run deploy
 
 cd ../insult
 npm run deploy
+
+cd ../frontend
+npm run deploy

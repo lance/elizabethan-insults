@@ -34,4 +34,4 @@ app.use('/js/app.js', express.static(
 
 app.listen(port);
 
-console.log(`insult service listening on ${port}`);
+console.log(`front end listening on ${port}`);

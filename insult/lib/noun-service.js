@@ -1,4 +1,4 @@
-const request = require('request');
+const axios = require('axios');
 const opossum = require('opossum');
 
 const nounService = process.env.NOUN_SERVICE || 'noun';
@@ -6,13 +6,8 @@ const nounPort = process.env.NOUN_SERVICE_PORT || '8080';
 const serviceUrl = `http://${nounService}:${nounPort}/api/noun`;
 
 function getNoun() {
-  return new Promise((resolve, reject) => {
-    request.get(serviceUrl, (error, response, body) => {
-      if (error) return reject(error);
-      if (response.statusCode > 200) return reject(response.statusMessage);
-      return resolve(body);
-    })
-  });
+  return axios.get(serviceUrl)
+    .then(response => response.data);
 }
 
 const circuitOptions = {
@@ -25,23 +20,12 @@ const circuitOptions = {
 const circuit = opossum(getNoun, circuitOptions);
 
 circuit.on('failure', console.error);
-circuit.fallback(_ => {
-  return JSON.stringify({ noun: 'dung scraper' });
-});
-
-function parseResponse (response) {
-  try {
-    return JSON.parse(response).noun;
-  } catch (err) {
-    console.error('Unable to parse noun service response', response);
-    console.error(err);
-    return err.toString();
-  }
-}
+circuit.fallback({ noun: 'dung scraper' });
 
 module.exports = exports = {
   get: async function get () {
-    return circuit.fire().then(parseResponse);
+    return circuit.fire()
+      .then(response => response.noun);
   }
 };
 

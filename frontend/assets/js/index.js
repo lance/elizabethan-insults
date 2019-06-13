@@ -2,16 +2,11 @@
 
 process.env.WEB = true;
 
-const request = require('superagent');
+const axios = require('axios');
 const opossum = require('opossum');
 const $ = require('jquery');
 
 const serviceUrl = 'http://insult-elizabethan-insults.192.168.42.207.nip.io/api/insult';
-
-// UI event handlers
-$('#invoke').click(e => insult.fire(e).then(updateInsultList));
-$('#form-submit').submit(e => insult.fire(e).then(updateInsultList));
-$('#clear').click(clearInsultList);
 
 const circuitBreakerOptions = {
   timeout: 1000,
@@ -30,6 +25,8 @@ insult.fallback(function () {
   };
 });
 
+insult.on('success', console.log);
+insult.on('fallback', console.log);
 insult.on('failure', console.log);
 insult.on('reject', console.log);
 insult.on('open', console.log);
@@ -38,13 +35,11 @@ function getOrPostInsult (e) {
   e.preventDefault();
   const name = $('#name').val();
   if (name === '') {
-    return request.get(serviceUrl).then(result => JSON.parse(result.text));
+    return axios.get(serviceUrl).then(result => result.data);
   }
   else {
-    return request.post(serviceUrl)
-      .set('Content-Type', 'application/json')
-      .send({ name })
-      .then(result => JSON.parse(result.text));
+    return axios.post(serviceUrl, { name })
+      .then(result => result.data);
   }
 }
 
@@ -58,3 +53,8 @@ function clearInsultList (e) {
   $('#insults').html('');
   $('#name').val('');
 }
+
+// UI event handlers
+$('#invoke').click(e => insult.fire(e).then(updateInsultList));
+$('#form-submit').submit(e => insult.fire(e).then(updateInsultList));
+$('#clear').click(clearInsultList);
