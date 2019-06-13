@@ -1,5 +1,6 @@
 'use strict';
 
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const nounService = require('./noun-service');
 const adjectiveService = require('./adjective-service');
@@ -50,8 +51,9 @@ function buildInsult () {
 
 module.exports = exports = function insultApi (router) {
   router.use(bodyParser.json());
-  router.get('/insult', get);
-  router.post('/insult', post);
+  router.options('*', cors());
+  router.get('/insult', cors(), get);
+  router.post('/insult', cors(), post);
   router.get('/metrics', metrics);
   return router;
 };

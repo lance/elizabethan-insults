@@ -3,7 +3,6 @@
 const express = require('express');
 const swaggerUi = require('swagger-ui-express');
 const api = require('./lib/insult');
-const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -13,7 +12,7 @@ app.use('/api-docs', swaggerUi.serve,
   swaggerUi.setup(require('./lib/insult.json')));
 
 // add the API
-app.use('/api', cors(), api(express.Router()));
+app.use('/api', api(express.Router()));
 
 // add liveness and readiness endpoints
 // at /api/health/liveness and /api/health/readiness
