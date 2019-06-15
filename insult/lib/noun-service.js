@@ -20,7 +20,7 @@ const circuitOptions = {
 const circuit = opossum(getNoun, circuitOptions);
 
 circuit.on('failure', console.error);
-circuit.fallback({ noun: 'dung scraper' });
+circuit.fallback(_ => ({ noun: 'dung scraper' }));
 
 module.exports = exports = {
   get: async function get () {

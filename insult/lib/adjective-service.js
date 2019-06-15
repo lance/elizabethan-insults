@@ -27,7 +27,7 @@ const fallbacks = [
 let count = 0;
 
 circuit.on('failure', console.error);
-circuit.fallback({ adjective: fallbacks[count++ % 4] });
+circuit.fallback(_ => ({ adjective: fallbacks[count++ % 4] }));
 
 module.exports = exports = {
   get: async function get () {
