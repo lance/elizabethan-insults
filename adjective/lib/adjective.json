@@ -21,10 +21,10 @@
     }
   ],
   "paths": {
-    "/health": {
+    "/health/readiness": {
       "get": {
-        "summary": "Get the health of the service",
-        "description": "Returns an HTTP response code and a JSON document detailing the current health status of the service",
+        "summary": "Get the readiness of the service",
+        "description": "Returns an HTTP response code and a JSON document detailing the current readiness status of the service",
         "operationId": "health",
         "responses": {
           "200": {
@@ -32,7 +32,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/health"
+                  "$ref": "#/components/schemas/health/readiness"
                 }
               }
             }
@@ -42,7 +42,36 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/health"
+                  "$ref": "#/components/schemas/health/readiness"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/liveness": {
+      "get": {
+        "summary": "Get the liveness of the service",
+        "description": "Returns an HTTP response code and a JSON document detailing the current liveness status of the service",
+        "operationId": "liveness",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/health/liveness"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/health/liveness"
                 }
               }
             }
