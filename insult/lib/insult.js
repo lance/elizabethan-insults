@@ -4,7 +4,10 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const nounService = require('./noun-service');
 const adjectiveService = require('./adjective-service');
-const circuitBreaker = require('opossum');
+const CircuitBreaker = require('opossum');
+const PrometheusMetrics = require('opossum-prometheus');
+
+const prometheus = new PrometheusMetrics([nounService.circuit, adjectiveService.circuit]);
 
 function get (req, res) {
   res.type('application/json');
@@ -31,7 +34,7 @@ function post (req, res) {
 
 function metrics(req, res) {
   res.type('text/plain');
-  res.send(circuitBreaker.metrics());
+  res.send(prometheus.metrics);
 }
 
 function buildInsult () {

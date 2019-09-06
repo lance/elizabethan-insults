@@ -1,12 +1,15 @@
 'use strict';
 
-process.env.WEB = true;
-
 const axios = require('axios');
-const opossum = require('opossum');
+const circuitBreaker = require('opossum');
 const $ = require('jquery');
 
-const serviceUrl = 'http://insult-elizabethan-insults.192.168.42.207.nip.io/api/insult';
+// const serviceUrl = process.env.INSULT_SERVICE || 'http://localhost:8080/api/insult';
+let serviceUrl;
+axios.get('/insult-url').then(result => {
+  console.log(result);
+  serviceUrl = result.data;
+});
 
 const circuitBreakerOptions = {
   timeout: 1000,
@@ -15,7 +18,7 @@ const circuitBreakerOptions = {
   name: 'insult service'
 };
 
-const insult = opossum(getOrPostInsult, circuitBreakerOptions);
+const insult = new circuitBreaker(getOrPostInsult, circuitBreakerOptions);
 insult.fallback(function () {
   return {
     name: 'Server Admin',
@@ -34,11 +37,18 @@ insult.on('open', console.log);
 function getOrPostInsult (e) {
   e.preventDefault();
   const name = $('#name').val();
+  let url = $('#service-url').val();
+
+  if (url === undefined || url === '') {
+    url = serviceUrl; 
+  }
+  console.log(`Fetching insult from ${url}`);
   if (name === '') {
-    return axios.get(serviceUrl).then(result => result.data);
+    return axios.get(url)
+      .then(result => result.data);
   }
   else {
-    return axios.post(serviceUrl, { name })
+    return axios.post(url, { name })
       .then(result => result.data);
   }
 }

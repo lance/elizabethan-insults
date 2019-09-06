@@ -11,7 +11,8 @@ const swaggerUi = require('swagger-ui-express');
 const api = require('./lib/noun');
 app.use('/api', api(express.Router()));
 
-// add health check endpoint
+// add health check endpoints
+// at /api/health/liveness and /api/health/readiness
 require('kube-probe')(app);
 
 // add swagger API docs

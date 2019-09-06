@@ -6,7 +6,5 @@ module.exports = {
     filename: 'app.js',
     path: path.resolve(__dirname, 'public')
   },
-  externals: {
-    'prom-client': 'prom-client'
-  }
+  devtool: "source-map"
 };

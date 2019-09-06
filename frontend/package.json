@@ -8,7 +8,11 @@
     "lint": "semistandard --fix test/*.js index.js",
     "release": "standard-version",
     "deploy": "nodeshift --strictSSL=false --imageTag=12.x --expose",
-    "start": "node ."
+    "start": "node .",
+    "preimage:build": "npm install && npm run build",
+    "image:build": "docker build -t docker.io/lanceball/insults-frontend:v0.0.1 .",
+    "image:start": "docker run --rm -p8080:8080 docker.io/lanceball/insults-frontend:v0.0.1",
+    "image:push": "docker push docker.io/lanceball/insults-frontend:v0.0.1"
   },
   "repository": {
     "type": "git",
@@ -53,8 +57,8 @@
     "express": "~4.16.3",
     "jquery": "^3.4.1",
     "kube-probe": "~0.3.1",
-    "opossum": "^2.1.0",
-    "patternfly": "^3.59.1",
+    "opossum": "~4.0.0",
+    "patternfly": "^3.59.3",
     "webpack": "~4.23.1"
   }
 }

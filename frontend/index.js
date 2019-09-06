@@ -3,12 +3,15 @@ const path = require('path');
 
 const express = require('express');
 const probe = require('kube-probe');
+const insultService = process.env.INSULT_SERVICE || 'http://localhost:8080/api/insult'
 const port = process.env.PORT || 8080;
 const app = express();
 
 
 // add liveness and readiness endpoints
 require('kube-probe')(app);
+
+app.get('/insult-url', (request, response) => response.end(insultService));
 
 // serve assets from the file system
 app.use('/', express.static(
@@ -29,9 +32,4 @@ app.use('/js/jquery.js', express.static(
   path.join(__dirname,
     'node_modules', 'jquery', 'dist', 'jquery.min.js')));
 
-app.use('/js/app.js', express.static(
-  path.join(__dirname, 'public', 'app.js')));
-
-app.listen(port);
-
-console.log(`front end listening on ${port}`);
+app.listen(port, _ => console.log(`front end listening on ${port}`));

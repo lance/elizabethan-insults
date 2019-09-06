@@ -7,7 +7,11 @@
     "lint": "semistandard test/*.js index.js",
     "release": "standard-version",
     "deploy": "nodeshift --strictSSL=false --imageTag=12.x --expose",
-    "start": "node ."
+    "start": "node .",
+    "preimage:build": "npm install",
+    "image:build": "docker build -t docker.io/lanceball/insults-adjective:v0.0.1 .",
+    "image:start": "docker run --rm -p8080:8080 docker.io/lanceball/insults-adjective:v0.0.1",
+    "image:push": "docker push docker.io/lanceball/insults-adjective:v0.0.1"
   },
   "repository": {
     "type": "git",

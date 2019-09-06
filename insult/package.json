@@ -7,7 +7,11 @@
     "lint": "semistandard --fix test/*.js index.js",
     "release": "standard-version",
     "deploy": "nodeshift --strictSSL=false --imageTag=12.x --expose",
-    "start": "node ."
+    "start": "node .",
+    "preimage:build": "npm install",
+    "image:build": "docker build -t docker.io/lanceball/insults-insult:v0.0.1 .",
+    "image:start": "docker run --rm -p8080:8080 docker.io/lanceball/insults-insult:v0.0.1",
+    "image:push": "docker push docker.io/lanceball/insults-insult:v0.0.1"
   },
   "repository": {
     "type": "git",
@@ -46,7 +50,8 @@
     "cors": "^2.8.5",
     "express": "~4.16.3",
     "kube-probe": "~0.3.1",
-    "opossum": "~2.1.0",
+    "opossum": "~4.0.0",
+    "opossum-prometheus": "0.0.2",
     "swagger-ui-express": "~3.0.9"
   }
 }

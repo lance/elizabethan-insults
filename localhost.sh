@@ -23,6 +23,6 @@ echo "insult service PID $!"
 cd ../frontend
 echo "starting frontend"
 # npm run build
-# npm install
+npm install
 PORT=3000 node .
 echo "frontend service $!"

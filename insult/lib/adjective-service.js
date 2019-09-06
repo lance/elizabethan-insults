@@ -1,5 +1,5 @@
 const axios = require('axios');
-const opossum = require('opossum');
+const CircuitBreaker = require('opossum');
 
 const adjectiveService = process.env.ADJECTIVE_SERVICE || 'adjective';
 const adjectivePort = process.env.ADJECTIVE_SERVICE_PORT || '8080';
@@ -14,10 +14,9 @@ const circuitOptions = {
   errorThresholdPercentage: 70,
   timeout: 500,
   resetTimeout: 5000,
-  name: 'adjective service',
-  usePrometheus: true
+  name: 'adjective service'
 };
-const circuit = opossum(getAdjective, circuitOptions);
+const circuit = new CircuitBreaker(getAdjective, circuitOptions);
 const fallbacks = [
   'beetle-headed',
   'wart-necked',
@@ -35,3 +34,5 @@ module.exports = exports = {
       .then(response => response.adjective);
   }
 };
+
+module.exports.circuit = circuit;

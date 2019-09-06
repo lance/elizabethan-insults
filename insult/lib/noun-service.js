@@ -1,5 +1,5 @@
 const axios = require('axios');
-const opossum = require('opossum');
+const CircuitBreaker = require('opossum');
 
 const nounService = process.env.NOUN_SERVICE || 'noun';
 const nounPort = process.env.NOUN_SERVICE_PORT || '8080';
@@ -14,10 +14,9 @@ const circuitOptions = {
   errorThresholdPercentage: 70,
   timeout: 500,
   resetTimeout: 5000,
-  name: 'noun service',
-  usePrometheus: true
+  name: 'noun service'
 };
-const circuit = opossum(getNoun, circuitOptions);
+const circuit = new CircuitBreaker(getNoun, circuitOptions);
 
 circuit.on('failure', console.error);
 circuit.fallback(_ => ({ noun: 'dung scraper' }));
@@ -29,4 +28,4 @@ module.exports = exports = {
   }
 };
 
-module.exports.stats = circuit.metrics.metrics;
+module.exports.circuit = circuit;
