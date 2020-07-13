@@ -33,7 +33,7 @@
   "devDependencies": {
     "nodeshift": "~3.0.1",
     "semistandard": "~12.0.1",
-    "standard-version": "^6.0.1"
+    "standard-version": "^8.0.1"
   },
   "description": "Simple web service that returns a random Elizabethan adjective",
   "keywords": [
