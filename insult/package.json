@@ -52,6 +52,6 @@
     "kube-probe": "~0.3.1",
     "opossum": "~4.0.0",
     "opossum-prometheus": "0.0.2",
-    "swagger-ui-express": "~3.0.9"
+    "swagger-ui-express": "~4.3.0"
   }
 }
